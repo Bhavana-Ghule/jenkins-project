@@ -7,8 +7,8 @@ pipeline{
            steps{
                 echo "cloning project from github to jenkins-server"
                 git branch: 'main',
-                credentialsId: 'github-token',
-                url: 'https://github.com/Bhavana-Ghule/Jenkins.git'
+                credentialsId: 'webhook',
+                url: 'https://github.com/Bhavana-Ghule/jenkins-project.git'
              }
           }
          stage('build'){
