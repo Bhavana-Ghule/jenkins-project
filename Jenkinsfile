@@ -15,6 +15,9 @@ pipeline{
             steps{
                  echo "building code from dockerfile to docker-image"
                  sh 'touch raj'
+                 sh 'mkdir sonu'
+                 sh 'touch bhavana'
+                 echo 'you can do it'
              }
           }
       }
