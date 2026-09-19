@@ -42,10 +42,16 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Deploy to Kubernetes') {
             steps {
-                sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
+
+                echo "Deploying application to Kubernetes..."
+
+                sh '''
+                    kubectl apply -f deployment.yaml
+                    kubectl apply -f service.yaml
+                '''
             }
-        }
+        } 
     }
 }
