@@ -41,7 +41,12 @@ pipeline {
                 }
             }
         }
-
+        stage('kind deployment') {
+            steps{
+                echo "creting cluster"
+                sh 'kind create cluster --name sonu'
+            }
+        }    
         stage('Deploy to Kubernetes') {
             steps {
 
