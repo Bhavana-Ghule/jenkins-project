@@ -2,7 +2,7 @@ pipeline {
     agent {label "agent-1"}
 
     environment {
-        APP_PATH = "/home/ubuntu/workspace/demo-project"
+        APP_PATH = "/home/ubuntu/workspace/"
         IMAGE_NAME = "nginx"
         IMAGE_TAG = "latest"
     }
