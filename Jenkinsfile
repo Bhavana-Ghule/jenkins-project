@@ -2,7 +2,7 @@ pipeline {
     agent { label "agent-1" }
 
     environment {
-        IMAGE_NAME = "nginx"
+        IMAGE_NAME = "sonu/nginx"
         IMAGE_TAG = "latest"
     }
 
