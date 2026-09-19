@@ -1,26 +1,28 @@
 pipeline {
-    agent {label "agent-1"}
+    agent { label "agent-1" }
 
     environment {
-        APP_PATH = "/home/ubuntu/workspace/"
         IMAGE_NAME = "nginx"
         IMAGE_TAG = "latest"
     }
 
     stages {
-        stage('clone'){
-            steps{
-                echo "cloning project from github to jenkins-server"
+
+        stage('Clone') {
+            steps {
+                echo "Cloning project from GitHub to Jenkins server"
+
                 git branch: 'main',
-                credentialsId: 'github-cred',
-                url: 'https://github.com/Bhavana-Ghule/jenkins-project.git'
+                    credentialsId: 'github-cred',
+                    url: 'https://github.com/Bhavana-Ghule/jenkins-project.git'
             }
         }
+
         stage('Build Docker Image') {
             steps {
-                dir("${APP_PATH}") {
-                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
-                }
+                sh 'pwd'
+                sh 'ls -la'
+                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
             }
         }
 
@@ -30,9 +32,13 @@ pipeline {
                     credentialsId: 'docker-cred',
                     usernameVariable: 'DOCKER_USERNAME',
                     passwordVariable: 'DOCKER_PASSWORD'
-                )]){
-                sh " docker login -u ${env.DOCKER_USERNAME} -p ${env.DOCKER_PASSWORD} "
-               }
+                )]) {
+                    sh '''
+                        echo "$DOCKER_PASSWORD" | docker login \
+                        -u "$DOCKER_USERNAME" \
+                        --password-stdin
+                    '''
+                }
             }
         }
 
