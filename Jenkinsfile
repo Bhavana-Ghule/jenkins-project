@@ -1,24 +1,45 @@
-pipeline{
-    
+pipeline {
     agent {label "agent-1"}
 
-      stages {
+    environment {
+        APP_PATH = "/home/ubuntu/workspace/demo-project"
+        IMAGE_NAME = "nginx"
+        IMAGE_TAG = "latest"
+    }
+
+    stages {
         stage('clone'){
-           steps{
+            steps{
                 echo "cloning project from github to jenkins-server"
                 git branch: 'main',
-                credentialsId: 'webhook',
-                url: 'https://github.com/Bhavana-Ghule/jenkins-project.git'
-             }
-          }
-         stage('build'){
-            steps{
-                 echo "building code from dockerfile to docker-image"
-                 sh 'touch raj'
-                 sh 'mkdir sonu'
-                 sh 'touch bhavana'
-                 echo 'you can do it'
-             }
-          }
-      }
+                credentialsId: 'github-cred',
+                url: 'https://github.com/Bhvana-Ghule/jenkins-project.git'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                dir("${APP_PATH}") {
+                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                }
+            }
+        }
+
+        stage('Docker Hub Login') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'docker-cred',
+                    usernameVariable: 'DOCKER_USERNAME',
+                    passwordVariable: 'DOCKER_PASSWORD'
+                )]){
+                sh " docker login -u ${env.DOCKER_USERNAME} -p ${env.DOCKER_PASSWORD} "
+               }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
+            }
+        }
+    }
 }
