@@ -13,7 +13,7 @@ pipeline {
                 echo "cloning project from github to jenkins-server"
                 git branch: 'main',
                 credentialsId: 'github-cred',
-                url: 'https://github.com/Bhvana-Ghule/jenkins-project.git'
+                url: 'https://github.com/Bhavana-Ghule/jenkins-project.git'
             }
         }
         stage('Build Docker Image') {
