@@ -1,4 +1,4 @@
-@Library('Jenkins-shared-library') _
+@Library('Jenkins-shared-library/var') _
 
 pipeline {
     agent {
